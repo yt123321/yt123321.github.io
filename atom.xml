@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yt123321.github.io/</id>
     <title>Gridea</title>
-    <updated>2020-03-25T09:36:09.207Z</updated>
+    <updated>2020-12-21T13:50:43.834Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yt123321.github.io/"/>
     <link rel="self" href="https://yt123321.github.io/atom.xml"/>
@@ -10,6 +10,236 @@
     <logo>https://yt123321.github.io/images/avatar.png</logo>
     <icon>https://yt123321.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[营养食谱的数学建模分析]]></title>
+        <id>https://yt123321.github.io/post/ying-yang-shi-pu-de-shu-xue-jian-mo-fen-xi/</id>
+        <link href="https://yt123321.github.io/post/ying-yang-shi-pu-de-shu-xue-jian-mo-fen-xi/">
+        </link>
+        <updated>2020-12-21T13:46:07.000Z</updated>
+        <summary type="html"><![CDATA[<p>若一个人每天对蛋白质、维生素A和钙的需求分别至少达到50g、2000IU和1200mg. 且只考虑表中列出的五种食物，每种食物一个数量单位内的蛋白质、维生素和钙的含量如表所示，<br>
+（1）确定每种食物的用量，以最小费用满足营养需求。<br>
+（2）依次考虑维生素、蛋白质和钙的需求增加一个单位时，是否需要改变食谱？若改变，成本增加多少？（3）D的价格增加1角时，是否需要改变食谱？<br>
+（4）同时考虑到减肥（此人对减少开支和减肥这两个目标的意愿大致四六开），确定每种食物的用量，以最小费用且最小热量满足营养需求.<br>
+表1：五种食物成分含量表<br>
+食物	蛋白质/g	维生素A/IU	钙/mg	价格/角	热量/kcal<br>
+A	        0.3	                73         	9.6	         10	         55<br>
+B	         1.2	            96	         7	           5	       90<br>
+C	          0.7	           20253	  19	      18	      32<br>
+D	         3.5	           890       	57	        20	        130<br>
+E	          5.5	            279	         22	          8	          150<br>
+（1）<br>
+问题分析<br>
+1.这一个问题是一组非负的未知变量构成的；<br>
+2．有一个欲求的目标，这个目标是一组未知变量的线性函数，要求实现目标问题的最小值（MIN），而且未知变量为非负数；<br>
+3．存在一定的约束限制条件，该约束限制条件是由一组线性不等式组成的；<br>
+4．要做的决策是制定食谱，即分别食用多少A，多少B，多少C，多少D，多少E,决策受到3个条件的限制：蛋白质、维生素和钙。<br>
+基本模型<br>
+决策变量：设摄入A为x1个单位，B为x2个单位，C为x3个单位，D为x4个单位，E为x5个单位<br>
+目标函数：z=10x1+5x2+18x3+20x4+8x5；<br>
+约束条件：<br>
+蛋白质：0.3x1+1.2x2+0.7x3+3.5x4+5.5x5&gt;=50；<br>
+维生素：73x1+96x2+20253x3+890x4+279x5&gt;=2000；<br>
+钙：    9.6x1+7x2+19x3+57x4+22x5&gt;=1200；<br>
+x1，x2，x3，x4，x5&gt;=0;<br>
+模型求解<br>
+Lingo代码如下<br>
+model:<br>
+min=10<em>x1+5</em>x2+18<em>x3+20</em>x4+8<em>x5;<br>
+[protein] 0.3</em>x1+1.2<em>x2+0.7</em>x3+3.5<em>x4+5.5</em>x5&gt;=50;<br>
+[vitamin] 73<em>x1+96</em>x2+20253<em>x3+890</em>x4+279<em>x5&gt;=2000;<br>
+[calcium] 9.6</em>x1+7<em>x2+19</em>x3+57<em>x4+22</em>x5&gt;=1200;<br>
+end<br>
+经过lingo软件得到结果如下<br>
+Variable           Value        Reduced Cost<br>
+X1        0.000000            6.631579<br>
+X2        0.000000            2.543860<br>
+X3        0.000000            11.33333<br>
+X4        21.05263            0.000000<br>
+X5        0.000000           0.2807018</p>
+<pre><code>                                 Row    Slack or Surplus      Dual Price
+                                   1        421.0526           -1.000000
+                             PROTEIN        23.68421            0.000000
+                             VITAMIN        16736.84            0.000000
+                             CALCIUM        0.000000          -0.3508772
+</code></pre>
+<p>结果分析<br>
+根据结果可知要以最小费用满足营养条件，只需要摄入D食物21.05263个单位，无需其他食物的摄入。</p>
+<p>（2）对于第一问当中的结果进行分析：<br>
+由Dual price一行可以得知蛋白质和维生素增加一个单位不需要改变食谱，而钙增加一个单位会使成本增加0.3508772。</p>
+<p>（3）<br>
+对结果进行敏感度分析<br>
+Ranges in which the basis is unchanged:</p>
+<pre><code>           Objective Coefficient Ranges:
+
+               Current        Allowable        Allowable
+</code></pre>
+<p>Variable      Coefficient         Increase         Decrease<br>
+X1         10.00000         INFINITY         6.631579<br>
+X2         5.000000         INFINITY         2.543860<br>
+X3         18.00000         INFINITY         11.33333<br>
+X4         20.00000        0.7272727         20.00000<br>
+X5         8.000000         INFINITY        0.2807018</p>
+<pre><code>                 Righthand Side Ranges:
+
+               Current        Allowable        Allowable
+  Row              RHS         Increase         Decrease
+</code></pre>
+<p>PROTEIN         50.00000         23.68421         INFINITY<br>
+VITAMIN         2000.000         16736.84         INFINITY<br>
+CALCIUM         1200.000         INFINITY         385.7143<br>
+结果分析<br>
+由敏感度分析，D的价格上涨应该在0.7272727角之内，但题目要求D的价格增加一角，所以需要改变食谱。<br>
+（4）<br>
+问题分析<br>
+对于减少开支和减肥这两个目标实现四六开，需要建立两种方案实现最终的营养目标。<br>
+模型建立<br>
+目标函数：z=0.4x1+0.6x2；<br>
+z1=10x1+5x2+18x3+20x4+8x5；<br>
+z2=55x1+90x2+32x3+130x4+150x5；<br>
+因此      z=37x1+56x2+26.4x3+86x4+93.2x5；<br>
+约束条件；<br>
+蛋白质：0.3x1+1.2x2+0.7x3+3.5x4+5.5x5&gt;=50；<br>
+维生素：73x1+96x2+20253x3+890x4+279x5&gt;=2000；<br>
+钙：    9.6x1+7x2+19x3+57x4+22x5&gt;=1200；<br>
+x1，x2，x3，x4，x5&gt;=0;<br>
+模型求解<br>
+lingo代码如下：<br>
+model:<br>
+min=37<em>x1+56</em>x2+26.4<em>x3+86</em>x4+93.2<em>x5;<br>
+[protein] 0.3</em>x1+1.2<em>x2+0.7</em>x3+3.5<em>x4+5.5</em>x5&gt;=50;<br>
+[vitamin] 73<em>x1+96</em>x2+20253<em>x3+890</em>x4+279<em>x5&gt;=2000;<br>
+[calcium] 9.6</em>x1+7<em>x2+19</em>x3+57<em>x4+22</em>x5&gt;=1200;<br>
+end</p>
+<p>运行结果为<br>
+Objective value:                              1695.489<br>
+Variable           Value        Reduced Cost<br>
+X1        0.000000            23.92180<br>
+X2        0.000000            41.69774<br>
+X3        50.75188            0.000000<br>
+X4        4.135338            0.000000<br>
+X5        0.000000            39.85414</p>
+<pre><code>                                 Row    Slack or Surplus      Dual Price
+                                   1        1695.489           -1.000000
+                             PROTEIN        0.000000           -4.857143
+                             VITAMIN        1029558.            0.000000
+                             CALCIUM        0.000000           -1.210526
+</code></pre>
+<p>结果分析<br>
+根据运行结果C类食物摄入50.75188个单位，D类食物4.135338个单位可以满足最小热量和最低费用的要求。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>若一个人每天对蛋白质、维生素A和钙的需求分别至少达到50g、2000IU和1200mg. 且只考虑表中列出的五种食物，每种食物一个数量单位内的蛋白质、维生素和钙的含量如表所示，<br>
+（1）确定每种食物的用量，以最小费用满足营养需求。<br>
+（2）依次考虑维生素、蛋白质和钙的需求增加一个单位时，是否需要改变食谱？若改变，成本增加多少？（3）D的价格增加1角时，是否需要改变食谱？<br>
+（4）同时考虑到减肥（此人对减少开支和减肥这两个目标的意愿大致四六开），确定每种食物的用量，以最小费用且最小热量满足营养需求.<br>
+表1：五种食物成分含量表<br>
+食物	蛋白质/g	维生素A/IU	钙/mg	价格/角	热量/kcal<br>
+A	        0.3	                73         	9.6	         10	         55<br>
+B	         1.2	            96	         7	           5	       90<br>
+C	          0.7	           20253	  19	      18	      32<br>
+D	         3.5	           890       	57	        20	        130<br>
+E	          5.5	            279	         22	          8	          150<br>
+（1）<br>
+问题分析<br>
+1.这一个问题是一组非负的未知变量构成的；<br>
+2．有一个欲求的目标，这个目标是一组未知变量的线性函数，要求实现目标问题的最小值（MIN），而且未知变量为非负数；<br>
+3．存在一定的约束限制条件，该约束限制条件是由一组线性不等式组成的；<br>
+4．要做的决策是制定食谱，即分别食用多少A，多少B，多少C，多少D，多少E,决策受到3个条件的限制：蛋白质、维生素和钙。<br>
+基本模型<br>
+决策变量：设摄入A为x1个单位，B为x2个单位，C为x3个单位，D为x4个单位，E为x5个单位<br>
+目标函数：z=10x1+5x2+18x3+20x4+8x5；<br>
+约束条件：<br>
+蛋白质：0.3x1+1.2x2+0.7x3+3.5x4+5.5x5&gt;=50；<br>
+维生素：73x1+96x2+20253x3+890x4+279x5&gt;=2000；<br>
+钙：    9.6x1+7x2+19x3+57x4+22x5&gt;=1200；<br>
+x1，x2，x3，x4，x5&gt;=0;<br>
+模型求解<br>
+Lingo代码如下<br>
+model:<br>
+min=10<em>x1+5</em>x2+18<em>x3+20</em>x4+8<em>x5;<br>
+[protein] 0.3</em>x1+1.2<em>x2+0.7</em>x3+3.5<em>x4+5.5</em>x5&gt;=50;<br>
+[vitamin] 73<em>x1+96</em>x2+20253<em>x3+890</em>x4+279<em>x5&gt;=2000;<br>
+[calcium] 9.6</em>x1+7<em>x2+19</em>x3+57<em>x4+22</em>x5&gt;=1200;<br>
+end<br>
+经过lingo软件得到结果如下<br>
+Variable           Value        Reduced Cost<br>
+X1        0.000000            6.631579<br>
+X2        0.000000            2.543860<br>
+X3        0.000000            11.33333<br>
+X4        21.05263            0.000000<br>
+X5        0.000000           0.2807018</p>
+<pre><code>                                 Row    Slack or Surplus      Dual Price
+                                   1        421.0526           -1.000000
+                             PROTEIN        23.68421            0.000000
+                             VITAMIN        16736.84            0.000000
+                             CALCIUM        0.000000          -0.3508772
+</code></pre>
+<p>结果分析<br>
+根据结果可知要以最小费用满足营养条件，只需要摄入D食物21.05263个单位，无需其他食物的摄入。</p>
+<p>（2）对于第一问当中的结果进行分析：<br>
+由Dual price一行可以得知蛋白质和维生素增加一个单位不需要改变食谱，而钙增加一个单位会使成本增加0.3508772。</p>
+<p>（3）<br>
+对结果进行敏感度分析<br>
+Ranges in which the basis is unchanged:</p>
+<pre><code>           Objective Coefficient Ranges:
+
+               Current        Allowable        Allowable
+</code></pre>
+<p>Variable      Coefficient         Increase         Decrease<br>
+X1         10.00000         INFINITY         6.631579<br>
+X2         5.000000         INFINITY         2.543860<br>
+X3         18.00000         INFINITY         11.33333<br>
+X4         20.00000        0.7272727         20.00000<br>
+X5         8.000000         INFINITY        0.2807018</p>
+<pre><code>                 Righthand Side Ranges:
+
+               Current        Allowable        Allowable
+  Row              RHS         Increase         Decrease
+</code></pre>
+<p>PROTEIN         50.00000         23.68421         INFINITY<br>
+VITAMIN         2000.000         16736.84         INFINITY<br>
+CALCIUM         1200.000         INFINITY         385.7143<br>
+结果分析<br>
+由敏感度分析，D的价格上涨应该在0.7272727角之内，但题目要求D的价格增加一角，所以需要改变食谱。<br>
+（4）<br>
+问题分析<br>
+对于减少开支和减肥这两个目标实现四六开，需要建立两种方案实现最终的营养目标。<br>
+模型建立<br>
+目标函数：z=0.4x1+0.6x2；<br>
+z1=10x1+5x2+18x3+20x4+8x5；<br>
+z2=55x1+90x2+32x3+130x4+150x5；<br>
+因此      z=37x1+56x2+26.4x3+86x4+93.2x5；<br>
+约束条件；<br>
+蛋白质：0.3x1+1.2x2+0.7x3+3.5x4+5.5x5&gt;=50；<br>
+维生素：73x1+96x2+20253x3+890x4+279x5&gt;=2000；<br>
+钙：    9.6x1+7x2+19x3+57x4+22x5&gt;=1200；<br>
+x1，x2，x3，x4，x5&gt;=0;<br>
+模型求解<br>
+lingo代码如下：<br>
+model:<br>
+min=37<em>x1+56</em>x2+26.4<em>x3+86</em>x4+93.2<em>x5;<br>
+[protein] 0.3</em>x1+1.2<em>x2+0.7</em>x3+3.5<em>x4+5.5</em>x5&gt;=50;<br>
+[vitamin] 73<em>x1+96</em>x2+20253<em>x3+890</em>x4+279<em>x5&gt;=2000;<br>
+[calcium] 9.6</em>x1+7<em>x2+19</em>x3+57<em>x4+22</em>x5&gt;=1200;<br>
+end</p>
+<p>运行结果为<br>
+Objective value:                              1695.489<br>
+Variable           Value        Reduced Cost<br>
+X1        0.000000            23.92180<br>
+X2        0.000000            41.69774<br>
+X3        50.75188            0.000000<br>
+X4        4.135338            0.000000<br>
+X5        0.000000            39.85414</p>
+<pre><code>                                 Row    Slack or Surplus      Dual Price
+                                   1        1695.489           -1.000000
+                             PROTEIN        0.000000           -4.857143
+                             VITAMIN        1029558.            0.000000
+                             CALCIUM        0.000000           -1.210526
+</code></pre>
+<p>结果分析<br>
+根据运行结果C类食物摄入50.75188个单位，D类食物4.135338个单位可以满足最小热量和最低费用的要求。</p>
+<!-- more -->
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[《一句顶一万句》]]></title>
         <id>https://yt123321.github.io/post/lesslessyi-ju-ding-yi-wan-ju-greatergreater/</id>
